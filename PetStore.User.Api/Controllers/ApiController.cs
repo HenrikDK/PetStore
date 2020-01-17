@@ -33,7 +33,8 @@ namespace PetStore.User.Api.Controllers
         /// <param name="username">The users username</param>
         /// <response code="400">Invalid username</response>
         /// <response code="404">User not found</response>
-        /// <returns></returns>
+        /// <response code="200">User found</response>
+        /// <returns>User object</returns>
         [HttpGet("/v1/user/{username}")]
         public ActionResult<Model.User> Get(string username)
         {
@@ -53,7 +54,7 @@ namespace PetStore.User.Api.Controllers
         /// <param name="user">The user to update</param>
         /// <response code="400">Invalid user</response>
         /// <response code="404">User not found</response>
-        /// <returns></returns>
+        /// <response code="200">User was updated</response>
         [HttpPut("/v1/user/{username}")]
         public ActionResult Update(string username, [FromBody] Model.User user)
         {
@@ -88,7 +89,7 @@ namespace PetStore.User.Api.Controllers
         /// <param name="username">The users username</param>
         /// <response code="400">Invalid user</response>
         /// <response code="404">User not found</response>
-        /// <returns></returns>
+        /// <response code="200">User was deleted</response>
         [HttpDelete("/v1/user/{username}")]
         public ActionResult Delete(string username)
         {
@@ -113,7 +114,8 @@ namespace PetStore.User.Api.Controllers
         /// <param name="username">The user name for login</param>
         /// <param name="password">The password for login in clear text</param>
         /// <response code="400">Invalid username password</response>
-        /// <returns></returns>
+        /// <response code="200">User logged in</response>
+        /// <returns>Bearer token</returns>
         [HttpGet("/v1/user/login")]
         public ActionResult<string> Login([FromQuery] string username, [FromQuery] string password)
         {
@@ -136,7 +138,7 @@ namespace PetStore.User.Api.Controllers
         /// <summary>
         /// Logs user out of the system
         /// </summary>
-        /// <returns></returns>
+        /// <response code="200">User logged out</response>
         [HttpGet("/v1/user/logout")]
         public ActionResult Logout()
         {
@@ -149,7 +151,7 @@ namespace PetStore.User.Api.Controllers
         /// Create user
         /// </summary>
         /// <param name="user">The user to be created</param>
-        /// <returns></returns>
+        /// <response code="200">User was created</response>
         [HttpPost("/v1/user")]
         public ActionResult<Model.User> Create([FromBody] Model.User user)
         {
@@ -173,7 +175,7 @@ namespace PetStore.User.Api.Controllers
         /// Creates list of users with given input array
         /// </summary>
         /// <param name="users">The list of users</param>
-        /// <returns></returns>
+        /// <response code="200">All users were created</response>
         [HttpPost("/v1/user/createWithList")]
         public ActionResult Create([FromBody] IList<Model.User> users)
         {
