@@ -36,6 +36,7 @@ namespace PetStore.Pet.Api.Controllers
         /// Find pet by ID
         /// </summary>
         /// <param name="petId">ID of pet to return</param>
+        /// <response code="404">Pet was not found</response>
         [HttpGet("/v1/pet/{petId}")]
         public ActionResult<Model.Pet> Get(int petId)
         {
@@ -54,6 +55,7 @@ namespace PetStore.Pet.Api.Controllers
         /// <param name="petId">ID of pet that needs to be updated</param>
         /// <param name="name">Updated name of the pet</param>
         /// <param name="status">Updated status of the pet</param>
+        /// <response code="405">Invalid status</response>
         [HttpPost("/v1/pet/{petId}")]
         public ActionResult Get(int petId, [FromForm] string name, [FromForm] string status)
         {
@@ -77,6 +79,7 @@ namespace PetStore.Pet.Api.Controllers
         /// Deletes a pet
         /// </summary>
         /// <param name="petId">ID of pet that needs to be deleted</param>
+        /// <response code="404">Pet was not found</response>
         [HttpDelete("/v1/pet/{petId}")]
         public ActionResult Delete(int petId)
         {
@@ -158,6 +161,7 @@ namespace PetStore.Pet.Api.Controllers
         /// Finds Pets by status
         /// </summary>
         /// <param name="status">Status value that needs to be considered for filter: available pending or sold</param>
+        /// <response code="405">Invalid status</response>
         [HttpGet("/v1/pet/findByStatus")]
         public ActionResult<List<Model.Pet>> Get(string status)
         {
