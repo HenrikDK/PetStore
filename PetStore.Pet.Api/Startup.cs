@@ -43,7 +43,7 @@ namespace PetStore.Pet.Api
                 c.TagActionsBy(p => new List<string> {"Pet - Everything about your Pets"});
                 c.SwaggerDoc("swagger", new OpenApiInfo { Title = "Pet API", Version = "v1" });
                 
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
