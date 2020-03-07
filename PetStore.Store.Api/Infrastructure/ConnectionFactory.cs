@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace PetStore.Store.Api.Infrastructure
 {
@@ -10,12 +11,14 @@ namespace PetStore.Store.Api.Infrastructure
     
     public class ConnectionFactory : IConnectionFactory
     {
+        private readonly IConfiguration _configuration;
         private Lazy<string> _connectionString;
         
-        public ConnectionFactory()
+        public ConnectionFactory(IConfiguration configuration)
         {
-            //Connection string normally fetched from configuration service
-            _connectionString = new Lazy<string>(() => "Server=localhost;Port=5432;Database=henrik;User Id=postgres;Password=postgres;");
+            _configuration = configuration;
+            
+            _connectionString = new Lazy<string>(GetConnectionStringFromConfiguration);
         }
 
         public IDbConnection Get()
@@ -23,6 +26,17 @@ namespace PetStore.Store.Api.Infrastructure
             var connection = new Npgsql.NpgsqlConnection(_connectionString.Value);
             connection.Open();
             return connection;
+        }
+
+        private string GetConnectionStringFromConfiguration()
+        {
+            var connectionString = Environment.GetEnvironmentVariable("postgres");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = _configuration.GetConnectionString("postgres");
+            }
+
+            return connectionString;
         }
     }
 }
