@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Lamar.Microsoft.DependencyInjection;
@@ -7,20 +8,20 @@ namespace PetStore.User.Api
 {
     public class Program
     {
-        public static bool Console = false;
+        public static bool Debug = false;
 
         public static void Main(string[] args)
         {
-            if (args.Contains("console") || Debugger.IsAttached)
+            if (args.Contains("debug") || Debugger.IsAttached || Environment.GetEnvironmentVariable("debug") != null )
             {
-                Console = true;
+                Debug = true;
             }
             
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseLamar()
                 .UseStartup<Startup>()
-                .UseUrls("http://*:13003/")
+                .UseUrls("http://*:13003")
                 .Build();
             
             host.Run();

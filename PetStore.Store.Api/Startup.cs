@@ -29,7 +29,7 @@ namespace PetStore.Store.Api
             services.AddControllers();
             services.AddLamar(new ApiRegistry());
 
-            if (Program.Console)
+            if (Program.Debug)
             {
                 services.AddLogging(x =>
                 {
@@ -52,7 +52,7 @@ namespace PetStore.Store.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (Program.Console || env.IsDevelopment())
+            if (Program.Debug || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
