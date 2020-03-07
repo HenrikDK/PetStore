@@ -20,8 +20,11 @@ jobs:
 
       - name: Push image
         run: |
-          docker tag petstore-pet-api ${{ secrets.DOCKER_USER }}/petstore:petstore-pet-api-latest
-          docker push ${{ secrets.DOCKER_USER }}/petstore:petstore-pet-api-latest
+          build_id=$(date +'%Y%m%d')
+          build_id+="-"
+          build_id+=$(git rev-parse --short "$GITHUB_SHA")
+          docker tag petstore-pet-api ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
+          docker push ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
   build2:
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +39,11 @@ jobs:
 
       - name: Push image
         run: |
-          docker tag petstore-store-api ${{ secrets.DOCKER_USER }}/petstore:petstore-store-api-latest
-          docker push ${{ secrets.DOCKER_USER }}/petstore:petstore-store-api-latest
+          build_id=$(date +'%Y%m%d')
+          build_id+="-"
+          build_id+=$(git rev-parse --short "$GITHUB_SHA")
+          docker tag petstore-store-api ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
+          docker push ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
   build3:
     runs-on: ubuntu-latest
     steps:
@@ -52,5 +58,8 @@ jobs:
 
       - name: Push image
         run: |
-          docker tag petstore-user-api ${{ secrets.DOCKER_USER }}/petstore:petstore-user-api-latest
-          docker push ${{ secrets.DOCKER_USER }}/petstore:petstore-user-api-latest
+          build_id=$(date +'%Y%m%d')
+          build_id+="-"
+          build_id+=$(git rev-parse --short "$GITHUB_SHA")
+          docker tag petstore-user-api ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id
+          docker push ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id
