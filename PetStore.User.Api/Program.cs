@@ -21,7 +21,7 @@ namespace PetStore.User.Api
                 .UseKestrel()
                 .UseLamar()
                 .UseStartup<Startup>()
-                .UseUrls("http://*:13003")
+                .UseUrls("http://*:80")
                 .Build();
             
             host.Run();
