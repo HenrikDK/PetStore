@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PetStore.User.Api.Infrastructure;
+using Prometheus;
 
 namespace PetStore.User.Api
 {
@@ -66,9 +67,11 @@ namespace PetStore.User.Api
             });
 
             app.UseRouting();
+            app.UseHttpMetrics();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
             });
         }
     }
