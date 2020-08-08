@@ -20,6 +20,7 @@
     <PackageReference Include="Lamar" Version="4.1.0" />
     <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.1.0" />
     <PackageReference Include="Npgsql" Version="4.1.2" />
+    <PackageReference Include="prometheus-net.AspNetCore" Version="3.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.0.0-rc5" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0-rc5" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.0.0-rc5" />
