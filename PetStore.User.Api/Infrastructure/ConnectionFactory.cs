@@ -18,7 +18,7 @@ namespace PetStore.User.Api.Infrastructure
         {
             _configuration = configuration;
             
-            _connectionString = new Lazy<string>(GetConnectionStringFromConfiguration);
+            _connectionString = new Lazy<string>(() => _configuration.GetValue<string>("postgres"));
         }
 
         public IDbConnection Get()
@@ -26,17 +26,6 @@ namespace PetStore.User.Api.Infrastructure
             var connection = new Npgsql.NpgsqlConnection(_connectionString.Value);
             connection.Open();
             return connection;
-        }
-
-        private string GetConnectionStringFromConfiguration()
-        {
-            var connectionString = Environment.GetEnvironmentVariable("postgres");
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                connectionString = _configuration.GetConnectionString("postgres");
-            }
-
-            return connectionString;
         }
     }
 }
