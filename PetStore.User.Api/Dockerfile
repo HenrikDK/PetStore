@@ -1,18 +1,18 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:5.0-alpine AS build-env
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy everything else and build
+# Copy everything and build
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-EXPOSE 13003
-
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-alpine
+RUN adduser --disabled-password \
+  --home /app \
+  --gecos '' dotnetuser && chown -R dotnetuser /app
+
 WORKDIR /app
 COPY --from=build-env /app/out .
+
+USER dotnetuser
 ENTRYPOINT ["dotnet", "PetStore.User.Api.dll"]
