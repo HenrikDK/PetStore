@@ -1,8 +1,7 @@
-namespace PetStore.User.Api.Model
+namespace PetStore.User.Api.Model;
+
+public enum UserStatus
 {
-    public enum UserStatus
-    {
-        Active,
-        Inactive
-    }
+    Active,
+    Inactive
 }

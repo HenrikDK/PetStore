@@ -1,23 +1,20 @@
-using Lamar;
+namespace PetStore.User.Api.Infrastructure;
 
-namespace PetStore.User.Api.Infrastructure
+public class ApiRegistry : ServiceRegistry
 {
-    public class ApiRegistry : ServiceRegistry
+    public ApiRegistry()
     {
-        public ApiRegistry()
+        Scan(x =>
         {
-            Scan(x =>
-            {
-                x.AssemblyContainingType<Program>();
+            x.AssemblyContainingType<Program>();
                 
-                x.WithDefaultConventions();
+            x.WithDefaultConventions();
 
-                x.LookForRegistries();
+            x.LookForRegistries();
                 
-                x.ExcludeType<ApiRegistry>();
-            });
+            x.ExcludeType<ApiRegistry>();
+        });
 
-            For<IConnectionFactory>().Use<ConnectionFactory>().Singleton();
-        }
+        For<IConnectionFactory>().Use<ConnectionFactory>().Singleton();
     }
 }

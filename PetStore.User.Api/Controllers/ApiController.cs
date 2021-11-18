@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Transactions;
-using Microsoft.AspNetCore.Mvc;
-using MoreLinq;
-using PetStore.User.Api.Model.Commands;
+﻿using PetStore.User.Api.Model.Commands;
 using PetStore.User.Api.Model.Queries;
 
 namespace PetStore.User.Api.Controllers
