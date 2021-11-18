@@ -1,9 +1,8 @@
-namespace PetStore.Pet.Api.Model
+namespace PetStore.Pet.Api.Model;
+
+public enum PetCategory
 {
-    public enum PetCategory
-    {
-        Dog,
-        Cat,
-        Bunny
-    }
+    Dog,
+    Cat,
+    Bunny
 }
