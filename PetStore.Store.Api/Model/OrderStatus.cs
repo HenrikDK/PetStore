@@ -1,9 +1,8 @@
-namespace PetStore.Store.Api.Model
+namespace PetStore.Store.Api.Model;
+
+public enum OrderStatus
 {
-    public enum OrderStatus
-    {
-        Placed,
-        Processing,
-        Shipped
-    }
+    Placed,
+    Processing,
+    Shipped
 }
