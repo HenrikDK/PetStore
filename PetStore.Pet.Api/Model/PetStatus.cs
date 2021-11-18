@@ -1,9 +1,8 @@
-namespace PetStore.Pet.Api.Model
+namespace PetStore.Pet.Api.Model;
+
+public enum PetStatus
 {
-    public enum PetStatus
-    {
-        Available,
-        Pending,
-        Sold
-    }
+    Available,
+    Pending,
+    Sold
 }
