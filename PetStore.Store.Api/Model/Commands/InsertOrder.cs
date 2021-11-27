@@ -24,9 +24,7 @@ values (@petid, @quantity, @shipdate, @status, @complete, current_timestamp, 'Pe
 
 select currval('orders.order_id_seq');";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.ExecuteScalar<int>(sql, order);
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.ExecuteScalar<int>(sql, order);
     }
 }

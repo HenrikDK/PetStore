@@ -25,9 +25,7 @@ update users.user set
     IsDelete = true
 where username = @username";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, new {username});
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, new {username});
     }
 }

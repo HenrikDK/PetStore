@@ -25,9 +25,7 @@ DeletedBy = 'PetStore.Pet.Api',
 IsDelete = true
 where Id = @Id";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, new { id = petId });
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, new { id = petId });
     }
 }

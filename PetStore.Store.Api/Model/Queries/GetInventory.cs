@@ -23,9 +23,7 @@ select p.Status, count(p.Id) from pets.pet p
 where p.IsDelete = false
 group by p.Status";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.Query<InventoryLine>(sql).ToList();
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.Query<InventoryLine>(sql).ToList();
     }
 }

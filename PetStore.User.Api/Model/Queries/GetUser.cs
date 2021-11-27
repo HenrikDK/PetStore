@@ -24,9 +24,7 @@ from users.user u
 where u.IsDelete = false
 and u.UserName = @UserName";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.Query<User>(sql, new {username}).FirstOrDefault();
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.Query<User>(sql, new {username}).FirstOrDefault();
     }
 }

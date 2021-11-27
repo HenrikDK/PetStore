@@ -24,9 +24,7 @@ values (@username, @firstname, @lastname, @email, @passwordhash, @salt, @phone, 
 
 select currval('users.user_id_seq')";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.ExecuteScalar<int>(sql, user);
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.ExecuteScalar<int>(sql, user);
     }
 }
