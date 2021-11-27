@@ -24,9 +24,7 @@ values (@name, @category, @status, @tags, current_timestamp, 'PetStore.Pet.Api')
 
 select currval('pets.pet_id_seq');";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.ExecuteScalar<int>(sql, pet);
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.ExecuteScalar<int>(sql, pet);
     }
 }

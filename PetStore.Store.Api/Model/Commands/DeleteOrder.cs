@@ -25,9 +25,7 @@ update orders.order set
     IsDelete = true
 where id = @Id";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, new {id = orderId});
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, new {id = orderId});
     }
 }

@@ -29,10 +29,8 @@ Modified = current_timestamp,
 ModifiedBy = 'PetStore.Pet.Api'
 where Id = @Id";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, pet);
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, pet);
     }
         
     public void Execute(int petId, string name, PetStatus status)
@@ -45,9 +43,7 @@ Modified = current_timestamp,
 ModifiedBy = 'PetStore.Pet.Api'
 where Id = @Id";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, new {name, status, id = petId});
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, new {name, status, id = petId});
     }
 }

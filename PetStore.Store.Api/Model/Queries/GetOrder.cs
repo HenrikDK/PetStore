@@ -24,9 +24,7 @@ from orders.order o
 where o.IsDelete = false
 and o.id = @id";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.Query<Order>(sql, new {id = orderId}).FirstOrDefault();
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.Query<Order>(sql, new {id = orderId}).FirstOrDefault();
     }
 }

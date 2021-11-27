@@ -22,9 +22,7 @@ public class InsertPetPhoto : IInsertPetPhoto
 insert into pets.photo (id, petid, url, metadata, created, createdby)
 values (@id, @petid, @url, @metaData, current_timestamp, 'PetStore.Pet.Api')";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, new {id = photoId, petId, metaData, url});
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, new {id = photoId, petId, metaData, url});
     }
 }

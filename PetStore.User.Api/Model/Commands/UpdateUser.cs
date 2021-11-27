@@ -31,9 +31,7 @@ Modified = current_timestamp,
 ModifiedBy = 'PetStore.User.Api'
 where UserName = @UserName";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            connection.Execute(sql, user);
-        }
+        using var connection = _connectionFactory.Get();
+        connection.Execute(sql, user);
     }
 }

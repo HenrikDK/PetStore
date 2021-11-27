@@ -24,9 +24,7 @@ from pets.pet p
 where p.IsDelete = false
 and p.status = @status";
 
-        using (var connection = _connectionFactory.Get())
-        {
-            return connection.Query<Pet>(sql, new {status}).ToList();
-        }
+        using var connection = _connectionFactory.Get();
+        return connection.Query<Pet>(sql, new {status}).ToList();
     }
 }
