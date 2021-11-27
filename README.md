@@ -1,8 +1,8 @@
 # PetStore Demo
 
-Code repository for a simple implementation of the swagger PetStore in C# used for testing.
+A simple implementation of the swagger PetStore in C# used for testing.
 
-The implementation is divded into 3 microservice REST api's.
+The implementation is divided into 3 microservice REST api's.
 
 ## Pet API
 ![alt text](https://raw.githubusercontent.com/henrikdk/PetStore/master/docs/pet.api.png "Pet API")
