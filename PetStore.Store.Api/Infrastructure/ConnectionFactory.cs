@@ -8,12 +8,11 @@ public interface IConnectionFactory
 public class ConnectionFactory : IConnectionFactory
 {
     private readonly IConfiguration _configuration;
-    private Lazy<string> _connectionString;
+    private readonly Lazy<string> _connectionString;
         
     public ConnectionFactory(IConfiguration configuration)
     {
         _configuration = configuration;
-            
         _connectionString = new Lazy<string>(() => _configuration.GetValue<string>("postgres"));
     }
 
