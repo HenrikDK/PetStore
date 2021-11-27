@@ -1,14 +1,11 @@
-using System.Collections.Generic;
+namespace PetStore.Pet.Api.Model;
 
-namespace PetStore.Pet.Api.Model
+public class Pet
 {
-    public class Pet
-    {
-        public int Id { get; set; }
-        public PetCategory Category { get; set; }
-        public string Name { get; set; }
-        public IList<string> PhotoUrls { get; set; }
-        public string Tags { get; set; }
-        public PetStatus Status { get; set; }
-    }
+    public int Id { get; set; }
+    public PetCategory Category { get; set; }
+    public string Name { get; set; }
+    public IList<string> PhotoUrls { get; set; }
+    public string Tags { get; set; }
+    public PetStatus Status { get; set; }
 }

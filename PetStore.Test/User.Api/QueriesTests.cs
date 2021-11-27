@@ -1,29 +1,25 @@
-using FluentAssertions;
-using Lamar;
-using NUnit.Framework;
 using PetStore.User.Api.Infrastructure;
 using PetStore.User.Api.Model.Queries;
 
-namespace PetStore.Test.User.Api
+namespace PetStore.Test.User.Api;
+
+public class QueriesTests
 {
-    public class QueriesTests
+    private Container _container;
+
+    [SetUp]
+    public void Setup()
     {
-        private Container _container;
+        _container = new Container(new ApiRegistry());
+    }
 
-        [SetUp]
-        public void Setup()
-        {
-            _container = new Container(new ApiRegistry());
-        }
+    [Test]
+    public void Should_get_user()
+    {
+        var getUser = _container.GetInstance<IGetUser>();
 
-        [Test]
-        public void Should_get_user()
-        {
-            var getUser = _container.GetInstance<IGetUser>();
+        var user = getUser.Execute("PETE");
 
-            var user = getUser.Execute("PETE");
-
-            user.Should().NotBeNull();
-        }
+        user.Should().NotBeNull();
     }
 }
