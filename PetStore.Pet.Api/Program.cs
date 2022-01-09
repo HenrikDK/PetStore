@@ -1,23 +1,63 @@
-namespace PetStore.Pet.Api;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console(new JsonFormatter())
+    .CreateLogger();
+
+builder.Host.UseLamar((context, registry) =>
 {
-    public static bool Debug = false;
-
-    public static void Main(string[] args)
+    registry.Scan(x =>
     {
-        if (args.Contains("debug") || Debugger.IsAttached || Environment.GetEnvironmentVariable("debug") != null )
-        {
-            Debug = true;
-        }
-            
-        var host = new WebHostBuilder()
-            .UseKestrel()
-            .UseLamar()
-            .UseStartup<Startup>()
-            .UseUrls("http://*:8080")
-            .Build();
-            
-        host.Run();
-    }
+        x.AssemblyContainingType<Program>();
+        x.WithDefaultConventions();
+        x.LookForRegistries();
+    });
+});
+
+builder.WebHost
+    .ConfigureKestrel(x => x.ListenAnyIP(8080))
+    .ConfigureLogging((context, config) =>
+    {
+        config.ClearProviders();
+        config.AddSerilog();
+    });
+
+builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.TagActionsBy(p => new List<string> {"Pet - Everything about your Pets"});
+    c.SwaggerDoc("swagger", new OpenApiInfo { Title = "Pet API", Version = "v1" });
+                
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
+var app = builder.Build();
+
+if (args.Contains("debug") || Debugger.IsAttached || Environment.GetEnvironmentVariable("debug") != null )
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseSwagger(x => x.RouteTemplate = "/{documentName}.json");
+app.UseSwaggerUI(x =>
+{
+    x.RoutePrefix = "";
+    x.SwaggerEndpoint("/swagger.json", "Pet Api v1");
+    x.ConfigObject.DefaultModelsExpandDepth = -1;
+});
+
+app.UseRouting();
+app.UseHttpMetrics();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics();
+});
+
+app.Run();
+
+Log.CloseAndFlush();
