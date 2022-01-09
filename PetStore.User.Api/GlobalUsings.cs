@@ -23,3 +23,5 @@ global using Lamar;
 global using Lamar.Microsoft.DependencyInjection;
 global using MoreLinq;
 global using Prometheus;
+global using Serilog;
+global using Serilog.Formatting.Json;
