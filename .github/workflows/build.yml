@@ -33,7 +33,7 @@ jobs:
       # dotnet needs a SIGINT to shut down gracefully and write out coverage data
       - name: Shut down API
         run: |          
-          docker ps | grep petstore-petapi | cut -d" " -f1 | xargs -I'{}' docker exec {} pkill -SIGINT dotnet
+          docker exec petstore-petapi pkill -SIGINT dotnet
           sleep 5
 
       - name: Archive Mayhem for API report
