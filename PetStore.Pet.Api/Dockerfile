@@ -11,7 +11,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine
 RUN adduser --disabled-password \
   --home /app \
   --gecos '' dotnetuser && \
-  mkdir /app/coverage && \
   chown -R dotnetuser /app
 
 # Need to install libxml2 for code coverage measurement

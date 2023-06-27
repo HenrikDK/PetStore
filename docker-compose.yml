@@ -11,7 +11,8 @@ services:
     petstore-petapi:
         build: ./PetStore.Pet.Api
         platform: linux/amd64
-        user: dotnetuser
+        # override the default user to root to prevent volume permission issues
+        user: root
         container_name: petstore-petapi
         healthcheck:
           test: ["CMD", "curl", "-f", "http://localhost:8080/"]
