@@ -10,10 +10,9 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine
 RUN adduser --disabled-password \
   --home /app \
-  --gecos '' dotnetuser && chown -R dotnetuser /app
-
-WORKDIR /app
-COPY --from=build-env /app/out .
+  --gecos '' dotnetuser && \
+  mkdir /app/coverage && \
+  chown -R dotnetuser /app
 
 # Need to install libxml2 for code coverage measurement
 RUN apk update \
@@ -21,6 +20,9 @@ RUN apk update \
     && rm -rf /var/cache/apk/*
 
 USER dotnetuser
+WORKDIR /app
+COPY --chown=dotnetuser:dotnetuser --from=build-env /app/out .
+
 RUN dotnet tool install -g dotnet-coverage
 
 #ENTRYPOINT ["dotnet", "PetStore.Pet.Api.dll"]
