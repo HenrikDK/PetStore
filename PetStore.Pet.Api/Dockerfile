@@ -25,4 +25,4 @@ COPY --chown=dotnetuser:dotnetuser --from=build-env /app/out .
 RUN dotnet tool install -g dotnet-coverage
 
 #ENTRYPOINT ["dotnet", "PetStore.Pet.Api.dll"]
-ENTRYPOINT [".dotnet/tools/dotnet-coverage", "collect", "-o", "coverage/coverage.xml", "-f", "cobertura", "-l", "log.txt", "-ll", "Verbose", "dotnet", "PetStore.Pet.Api.dll"]
+ENTRYPOINT [".dotnet/tools/dotnet-coverage", "collect", "-s", "coverage/coverage_settings.xml", "-o", "coverage/coverage.xml", "-f", "cobertura", "dotnet", "PetStore.Pet.Api.dll"]
