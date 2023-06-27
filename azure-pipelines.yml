@@ -1,0 +1,67 @@
+trigger:
+  - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'package'
+
+  - task: DockerCompose@0
+    displayName: dockerComposeUp
+    inputs:
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: up
+      arguments: -t dotnet-petstore:latest
+
+  # Run Mayhem for API
+  - script: |
+      curl -Lo mapi https://app.mayhem.security/cli/mapi/linux-musl/latest/mapi && chmod +x mapi
+      ./mapi run forallsecure/mapi-action-examples/petstore auto http://localhost:8888/openapi.yaml \
+        --url 'http://localhost:8888/' \
+        --sarif $(Build.ArtifactStagingDirectory)/mapi.sarif \
+        --junit $(Build.ArtifactStagingDirectory)/junit.xml \
+        --html $(Build.ArtifactStagingDirectory)/mapi.html
+    env:
+      MAPI_TOKEN: AT1.kHFJxvKLDembnFbz6gxkGOKz_despVhA
+    continueOnError: "true"
+    displayName: Run Mayhem for API to check for vulnerabilities
+
+  # Requires installation of SARIF SAST Scans Tab (https://marketplace.visualstudio.com/items?itemName=sariftools.scans)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'CodeAnalysisLogs'
+      publishLocation: 'Container'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '$(Build.ArtifactStagingDirectory)/junit.xml'   
+
+  # dotnet need a SIGINT to shut down gracefully and write out coverage data
+  - script: docker ps | grep petstore-petapi | cut -d" " -f1 | xargs -I'{}' docker exec {} pkill -SIGINT dotnet
+    displayName: Shut down API
+
+  # Required for PublishCodeCoverageResults
+  - task: UseDotNet@2
+    inputs:
+      version: 2.1.x
+
+  # Publish code coverage results v2 has problems: https://github.com/microsoft/azure-pipelines-tasks/issues/17756
+  # Publish any of the code coverage results from a build.
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: JaCoCo
+      summaryFileLocation: coverage.xml # string. Required. Path to summary files. 
+      pathToSources: PetStore.Pet.Api/ # string. Path to Source files. 

@@ -5,8 +5,9 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+# Build runtime image from SDK image so we have dotnet tooling available
+#FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine
 RUN adduser --disabled-password \
   --home /app \
   --gecos '' dotnetuser && chown -R dotnetuser /app
@@ -14,5 +15,13 @@ RUN adduser --disabled-password \
 WORKDIR /app
 COPY --from=build-env /app/out .
 
+# Need to install libxml2 for code coverage measurement
+RUN apk update \
+    && apk add libxml2 \
+    && rm -rf /var/cache/apk/*
+
 USER dotnetuser
-ENTRYPOINT ["dotnet", "PetStore.Pet.Api.dll"]
+RUN dotnet tool install -g dotnet-coverage
+
+#ENTRYPOINT ["dotnet", "PetStore.Pet.Api.dll"]
+ENTRYPOINT [".dotnet/tools/dotnet-coverage", "collect", "-o", "coverage/coverage.xml", "-f", "xml", "-l", "log.txt", "-ll", "Verbose", "dotnet", "PetStore.Pet.Api.dll"]

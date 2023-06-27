@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+    postgres:
+        image: postgres:10.5
+        restart: always
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+        volumes: 
+          - ./postgres_db_script:/docker-entrypoint-initdb.d/create_tables.sql
+    petstore-petapi:
+        build: ./PetStore.Pet.Api
+        platform: linux/amd64
+        container_name: petstore-petapi
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+          interval: 1s
+          timeout: 1s
+          retries: 10
+        links:
+          - postgres
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - debug=true
+        ports:
+          - '8000:8080'
+        volumes:
+          - ./coverage:/app/coverage
