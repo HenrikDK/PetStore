@@ -13,10 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # chmod is workaround for Docker volume bind permissions, so container can write to coverage folder
       - name: Start API
         run: |
-          chown -R 1000:1000 coverage
           docker-compose up -d
 
       # Run Mayhem for API
