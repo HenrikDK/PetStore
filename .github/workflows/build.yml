@@ -15,7 +15,7 @@ jobs:
 
       - name: Start API
         run: |
-          docker-compose up -d
+          docker-compose up -d --wait
 
       # Run Mayhem for API
       - name: Run Mayhem for API to check for vulnerabilities
