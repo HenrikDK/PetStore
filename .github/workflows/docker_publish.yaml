@@ -1,65 +1,65 @@
-name: Docker Publish
+# name: Docker Publish
 
-on:
-  push:
-    # Publish `master` as Docker `latest` image.
-    branches:
-      - master
-jobs:
-  build1:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+# on:
+#   push:
+#     # Publish `master` as Docker `latest` image.
+#     branches:
+#       - master
+# jobs:
+#   build1:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag petstore-pet-api
-        working-directory: PetStore.Pet.Api
+#       - name: Build image
+#         run: docker build . --file Dockerfile --tag petstore-pet-api
+#         working-directory: PetStore.Pet.Api
 
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+#       - name: Log into registry
+#         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
 
-      - name: Push image
-        run: |
-          build_id=$(date +'%Y%m%d')
-          build_id+="-"
-          build_id+=$(git rev-parse --short "$GITHUB_SHA")
-          docker tag petstore-pet-api ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
-          docker push ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
-  build2:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+#       - name: Push image
+#         run: |
+#           build_id=$(date +'%Y%m%d')
+#           build_id+="-"
+#           build_id+=$(git rev-parse --short "$GITHUB_SHA")
+#           docker tag petstore-pet-api ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
+#           docker push ${{ secrets.DOCKER_USER }}/petstore-pet-api:$build_id
+#   build2:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag petstore-store-api
-        working-directory: PetStore.Store.Api
+#       - name: Build image
+#         run: docker build . --file Dockerfile --tag petstore-store-api
+#         working-directory: PetStore.Store.Api
 
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+#       - name: Log into registry
+#         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
 
-      - name: Push image
-        run: |
-          build_id=$(date +'%Y%m%d')
-          build_id+="-"
-          build_id+=$(git rev-parse --short "$GITHUB_SHA")
-          docker tag petstore-store-api ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
-          docker push ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
-  build3:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+#       - name: Push image
+#         run: |
+#           build_id=$(date +'%Y%m%d')
+#           build_id+="-"
+#           build_id+=$(git rev-parse --short "$GITHUB_SHA")
+#           docker tag petstore-store-api ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
+#           docker push ${{ secrets.DOCKER_USER }}/petstore-store-api:$build_id
+#   build3:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag petstore-user-api
-        working-directory: PetStore.User.Api
+#       - name: Build image
+#         run: docker build . --file Dockerfile --tag petstore-user-api
+#         working-directory: PetStore.User.Api
 
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+#       - name: Log into registry
+#         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
 
-      - name: Push image
-        run: |
-          build_id=$(date +'%Y%m%d')
-          build_id+="-"
-          build_id+=$(git rev-parse --short "$GITHUB_SHA")
-          docker tag petstore-user-api ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id
-          docker push ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id
+#       - name: Push image
+#         run: |
+#           build_id=$(date +'%Y%m%d')
+#           build_id+="-"
+#           build_id+=$(git rev-parse --short "$GITHUB_SHA")
+#           docker tag petstore-user-api ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id
+#           docker push ${{ secrets.DOCKER_USER }}/petstore-user-api:$build_id

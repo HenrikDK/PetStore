@@ -1,0 +1,51 @@
+name: Build
+
+on: [push]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Start API
+        run: |
+          docker-compose up -d
+
+      # Run Mayhem for API
+      - name: Run Mayhem for API to check for vulnerabilities
+        uses: ForAllSecure/mapi-action@v1
+        continue-on-error: true
+        with:
+          mapi-token: ${{ secrets.MAPI_TOKEN }}
+          mapi-url: https://app.mayhem.security/
+          api-url: http://localhost:8000/
+          api-spec: http://localhost:8000/swagger.json
+          sarif-report: mapi.sarif
+          html-report: mapi.html
+          target: forallsecure/petstore/dotnet
+
+      # dotnet needs a SIGINT to shut down gracefully and write out coverage data
+      - name: Shut down API
+        run: |          
+          docker ps | grep petstore-petapi | cut -d" " -f1 | xargs -I'{}' docker exec {} pkill -SIGINT dotnet
+
+      - name: Archive Mayhem for API report
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: |
+            mapi.html
+            report/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage/coverage.xml
+          flags: vulnerability-tests
+          name: mayhem
