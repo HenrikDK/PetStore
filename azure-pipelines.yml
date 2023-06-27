@@ -10,9 +10,11 @@ steps:
     inputs:
       dockerComposeFile: '**/docker-compose.yml'
       action: 'Run a Docker Compose command'
-      dockerComposeCommand: up -d --wait
+      dockerComposeCommand: up -d
 
-
+  # ADO seems to have an ancient version of docker-compose. Use sleep for the time being.
+  - script: |
+      sleep 15
 
   # Run Mayhem for API
   - script: |
