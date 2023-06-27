@@ -22,8 +22,6 @@ services:
         links:
           - postgres
         environment:
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=postgres
           - debug=true
         ports:
           - '8000:8080'
