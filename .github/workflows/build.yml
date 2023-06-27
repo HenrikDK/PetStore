@@ -35,8 +35,7 @@ jobs:
       - name: Shut down API
         run: |          
           docker exec petstore-petapi pkill -SIGINT dotnet
-          sleep 5
-          docker-compose logs
+          sleep 1
 
       - name: Archive Mayhem for API report
         uses: actions/upload-artifact@v3
@@ -44,7 +43,7 @@ jobs:
           name: reports
           path: |
             mapi.html
-            report/
+            coverage/coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
