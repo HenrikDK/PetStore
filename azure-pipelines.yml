@@ -11,6 +11,7 @@ steps:
       dockerComposeFile: '**/docker-compose.yml'
       action: 'Run a Docker Compose command'
       dockerComposeCommand: up
+      detached: true
 
   # Run Mayhem for API
   - script: |
