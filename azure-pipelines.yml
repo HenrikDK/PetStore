@@ -56,6 +56,6 @@ steps:
   # Publish any of the code coverage results from a build.
   - task: PublishCodeCoverageResults@1
     inputs:
-      codeCoverageTool: cobertura
+      codeCoverageTool: Cobertura
       summaryFileLocation: coverage/coverage.xml # string. Required. Path to summary files. 
       pathToSources: PetStore.Pet.Api/ # string. Path to Source files. 
