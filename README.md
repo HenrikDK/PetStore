@@ -12,3 +12,4 @@ The implementation is divided into 3 microservice REST api's.
 
 ## User API
 ![alt text](https://raw.githubusercontent.com/henrikdk/PetStore/master/docs/user.api.png "User API")
+
